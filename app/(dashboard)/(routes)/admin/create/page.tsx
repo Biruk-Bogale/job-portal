@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Job Title cannot be empty" }),
@@ -30,7 +31,15 @@ const JobCreatePage = () => {
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const response = await axios.post("/api/jobs", values);
+
+      console.log(response);
+    } catch (error) {
+      console.log((error as Error)?.message);
+      console.log(error);
+      //   toast notication
+    }
   };
 
   return (
