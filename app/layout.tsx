@@ -22,8 +22,11 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${poppins.className}`}>{children}</body>
-        <ToastProvider />
+        <body className={`${poppins.className}`}>
+          {children}
+
+          <ToastProvider />
+        </body>
       </html>
     </ClerkProvider>
   );
