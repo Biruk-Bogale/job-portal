@@ -20,7 +20,7 @@ const NavBarRoutes = () => {
             <Button
               variant={"outline"}
               size={"sm"}
-              className="border-purple-700/20"
+              className="border-purple-700/20 cursor-pointer"
             >
               <LogOut />
               Exit
@@ -31,7 +31,7 @@ const NavBarRoutes = () => {
             <Button
               variant={"outline"}
               size={"sm"}
-              className="border-purple-700/20"
+              className="border-purple-700/20 cursor-pointer"
             >
               Admin Mode
             </Button>

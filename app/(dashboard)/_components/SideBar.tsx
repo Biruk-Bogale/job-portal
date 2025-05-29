@@ -11,7 +11,7 @@ const SideBar = () => {
 
       {/* side bar routes */}
       <div className="flex flex-col w-full">
-<SidebarRoutes/>
+        <SidebarRoutes />
       </div>
     </div>
   );
