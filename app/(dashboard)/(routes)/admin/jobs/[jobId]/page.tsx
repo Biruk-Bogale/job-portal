@@ -5,6 +5,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import JobPublishAction from "./_components/JobPublishAction";
+import { Banner } from "@/components/Banner";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -66,6 +67,16 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
           disabled={!isComplete}
         />
       </div>
+
+      {/* warning before publishing the course */}
+      {!job?.isPublished && (
+        <Banner
+          variant={"warning"}
+          label={
+            "This job is unpublished. It will not be visible in the jobs list"
+          }
+        />
+      )}
     </div>
   );
 };
