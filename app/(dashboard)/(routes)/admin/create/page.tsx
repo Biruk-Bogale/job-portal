@@ -15,6 +15,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   title: z.string().min(1, { message: "Job Title cannot be empty" }),
@@ -29,12 +31,15 @@ const JobCreatePage = () => {
   });
 
   const { isSubmitting, isValid } = form.formState;
+  const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post("/api/jobs", values);
 
-      console.log(response);
+      router.push(`/admin/jobs/${response?.data?.id}"`);
+
+      toast.success("Job Created");
     } catch (error) {
       console.log((error as Error)?.message);
       console.log(error);
@@ -79,7 +84,7 @@ const JobCreatePage = () => {
             />
 
             <div className="flex items-center gap-x-2">
-              <Link href={"/"}>
+              <Link href={"/admin/jobs"}>
                 <Button type="button" variant={"ghost"}>
                   Cancel
                 </Button>
