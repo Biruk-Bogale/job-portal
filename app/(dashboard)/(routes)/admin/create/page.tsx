@@ -42,7 +42,7 @@ const JobCreatePage = () => {
       toast.success("Job Created");
     } catch (error) {
       console.log((error as Error)?.message);
-      console.log(error);
+
       //   toast notication
     }
   };

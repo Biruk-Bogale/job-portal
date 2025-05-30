@@ -8,6 +8,7 @@ import JobPublishAction from "./_components/JobPublishAction";
 import { Banner } from "@/components/Banner";
 import IconBadge from "@/components/IconBadge";
 import TitleForm from "./_components/TitleForm";
+import CategoryForm from "./_components/CategoryForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -30,11 +31,22 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
     },
   });
 
+  const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
   if (!job) {
     return redirect("/admin/jobs");
   }
 
-  const requiredFields = [job.title, job.description, job.imageUrl];
+  const requiredFields = [
+    job.title,
+    job.description,
+    job.imageUrl,
+    job.categoryId,
+  ];
 
   const totalFields = requiredFields.length;
 
@@ -96,6 +108,16 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
 
           {/* title form */}
           <TitleForm initialData={job} jobId={job.id} />
+
+          {/* category form */}
+          <CategoryForm
+            initialData={job}
+            jobId={job.id}
+            options={categories.map((category) => ({
+              label: category.name,
+              value: category.id,
+            }))}
+          />
         </div>
       </div>
     </div>

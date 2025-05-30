@@ -42,13 +42,15 @@ const TitleForm = ({ initialData, jobId }: TitleFormProps) => {
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.patch(`/api/jobs/${jobId}`, value);
+      await axios.patch(`/api/jobs/${jobId}`, value);
       toast.success("Job Updated");
       toggleEditing();
 
       router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
+
+      console.log((error as Error)?.message);
     }
   };
 
@@ -68,7 +70,7 @@ const TitleForm = ({ initialData, jobId }: TitleFormProps) => {
           ) : (
             <>
               <Pencil className="w-4 h-4 mr-2" />
-              Edit Title
+              Edit
             </>
           )}
         </Button>
