@@ -1,11 +1,13 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import JobPublishAction from "./_components/JobPublishAction";
 import { Banner } from "@/components/Banner";
+import IconBadge from "@/components/IconBadge";
+import TitleForm from "./_components/TitleForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -77,6 +79,25 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
           }
         />
       )}
+
+      {/* container layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        <div>
+          {/* title */}
+          <div className="flex items-center gap-x-2">
+            <IconBadge
+              icon={LayoutDashboard}
+              // variant={"default"}
+              // size={"default"}
+            />
+
+            <h2 className="text-xl text-neutral-700">Customize your job</h2>
+          </div>
+
+          {/* title form */}
+          <TitleForm initialData={job} jobId={job.id} />
+        </div>
+      </div>
     </div>
   );
 };
