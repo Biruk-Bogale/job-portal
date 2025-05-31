@@ -11,6 +11,10 @@ import TitleForm from "./_components/TitleForm";
 import CategoryForm from "./_components/CategoryForm";
 import ImageForm from "./_components/ImageForm";
 import ShortDescription from "./_components/ShortDescription";
+import ShiftTimingForm from "./_components/ShiftTimingMode";
+import HourlyRateForm from "./_components/HourlyRateForm";
+import WorkModeForm from "./_components/WorkModeForm";
+import WorkExprienceForm from "./_components/WorkExprienceForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -126,6 +130,18 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
 
           {/* short description */}
           <ShortDescription initialData={job} jobId={job.id} />
+
+          {/* Shift timing mode */}
+          <ShiftTimingForm initialData={job} jobId={job.id} />
+
+          {/* hourly rate */}
+          <HourlyRateForm initialData={job} jobId={job.id} />
+
+          {/* work mode */}
+          <WorkModeForm initialData={job} jobId={job.id} />
+
+          {/* work exprience */}
+          <WorkExprienceForm initialData={job} jobId={job.id} />
         </div>
       </div>
     </div>
