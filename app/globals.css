@@ -126,3 +126,7 @@ body,
 :root {
   height: 100%;
 }
+
+.ql_container {
+  font-size: 16px !important;
+}

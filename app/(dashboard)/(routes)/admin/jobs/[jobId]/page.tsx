@@ -15,6 +15,7 @@ import ShiftTimingForm from "./_components/ShiftTimingMode";
 import HourlyRateForm from "./_components/HourlyRateForm";
 import WorkModeForm from "./_components/WorkModeForm";
 import WorkExprienceForm from "./_components/WorkExprienceForm";
+import JobDescription from "./_components/JobDescription";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -100,6 +101,7 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
 
       {/* container layout */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+        {/* left container */}
         <div>
           {/* title */}
           <div className="flex items-center gap-x-2">
@@ -142,6 +144,15 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
 
           {/* work exprience */}
           <WorkExprienceForm initialData={job} jobId={job.id} />
+        </div>
+
+        {/* right container */}
+        <div></div>
+
+        {/* description */}
+
+        <div className="col-span-2">
+          <JobDescription initialData={job} jobId={job.id} />
         </div>
       </div>
     </div>
