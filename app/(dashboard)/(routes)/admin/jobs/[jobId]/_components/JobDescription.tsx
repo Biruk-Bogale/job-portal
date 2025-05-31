@@ -10,7 +10,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import getGenerativeAIResponse from "@/scripts/aistudio";
 import { zodResolver } from "@hookform/resolvers/zod";

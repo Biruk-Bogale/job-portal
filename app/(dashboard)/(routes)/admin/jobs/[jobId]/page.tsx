@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, ListCheck } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -16,6 +16,7 @@ import HourlyRateForm from "./_components/HourlyRateForm";
 import WorkModeForm from "./_components/WorkModeForm";
 import WorkExprienceForm from "./_components/WorkExprienceForm";
 import JobDescription from "./_components/JobDescription";
+import TagsForm from "./_components/TagsForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -100,7 +101,7 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
       )}
 
       {/* container layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+      <div className="grid md:grid-cols-2 grid-cols-1 gap-6 mt-16">
         {/* left container */}
         <div>
           {/* title */}
@@ -147,11 +148,20 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
         </div>
 
         {/* right container */}
-        <div></div>
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={ListCheck} />
+              <h2 className="text-xl text-neutral-700">Job Requirements</h2>
+            </div>
+
+            <TagsForm initialData={job} jobId={job.id} />
+          </div>
+        </div>
 
         {/* description */}
 
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <JobDescription initialData={job} jobId={job.id} />
         </div>
       </div>
