@@ -9,6 +9,7 @@ import { Banner } from "@/components/Banner";
 import IconBadge from "@/components/IconBadge";
 import TitleForm from "./_components/TitleForm";
 import CategoryForm from "./_components/CategoryForm";
+import ImageForm from "./_components/ImageForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -118,6 +119,8 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
               value: category.id,
             }))}
           />
+
+          <ImageForm initialData={job} jobId={job.id} />
         </div>
       </div>
     </div>
