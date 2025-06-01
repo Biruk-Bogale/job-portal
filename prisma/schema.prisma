@@ -30,9 +30,35 @@ model Job{
   workMode String?
   categoryId String? @db.ObjectId
   catagory Category? @relation(fields:[categoryId],references: [id])
+  companyId String? @db.ObjectId
+  company Company? @relation(fields:[companyId],references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   @@index([categoryId])
+  @@index([companyId])
+}
+
+model Company{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String
+  name String
+  description String?
+  logo String?
+  coverImage String?
+  mail String?
+  website String?
+  linkedIn String?
+  address_line_1 String?
+  address_line_3 String?
+  city String?
+  state String?
+  zipcode String?
+  jobs Job[]
+  followers String[]
+  overview String?
+  whyJoinUs String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Category{
