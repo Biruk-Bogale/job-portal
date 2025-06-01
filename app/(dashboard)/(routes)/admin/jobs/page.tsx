@@ -51,7 +51,7 @@ const JobPageOverView = async () => {
 
       {/* datatable - List of jobs */}
       <div className="mt-6">
-        <DataTable columns={columns} data={formatedJobs} />
+        <DataTable columns={columns} data={formatedJobs} searchKey="title"/>
       </div>
     </div>
   );
