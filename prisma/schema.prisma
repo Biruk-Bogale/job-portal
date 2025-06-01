@@ -49,7 +49,7 @@ model Company{
   website String?
   linkedIn String?
   address_line_1 String?
-  address_line_3 String?
+  address_line_2 String?
   city String?
   state String?
   zipcode String?

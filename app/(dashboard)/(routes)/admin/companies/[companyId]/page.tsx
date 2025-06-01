@@ -1,12 +1,15 @@
 import IconBadge from "@/components/IconBadge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, LayoutDashboard, Network } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
 import CompanyNameForm from "./_components/NameForm";
 import CompanyDescriptionForm from "./_components/DescriptionForm";
+import CompanyLogoForm from "./_components/LogoForm";
+import CompanySocialContactsForm from "./_components/SocialContactsForm";
+import CompanyCoverImageForm from "./_components/CoverImageForm";
 
 const CompanyEditPage = async ({
   params,
@@ -99,11 +102,36 @@ const CompanyEditPage = async ({
           <CompanyNameForm initialData={company} companyId={company.id} />
 
           {/* description form */}
-          <CompanyDescriptionForm initialData={company} companyId={company.id} />
+          <CompanyDescriptionForm
+            initialData={company}
+            companyId={company.id}
+          />
+
+          {/* comoany logo */}
+          <CompanyLogoForm initialData={company} companyId={company.id} />
         </div>
 
         {/* right container */}
-        <div className="space-y-6"></div>
+        <div className="space-y-6">
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={Network} />
+              <h2 className="text-xl">Company Social Contacts</h2>
+            </div>
+
+            {/* socials form */}
+            <CompanySocialContactsForm
+              initialData={company}
+              companyId={company.id}
+            />
+
+            {/* company cover image */}
+            <CompanyCoverImageForm
+              initialData={company}
+              companyId={company.id}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
