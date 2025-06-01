@@ -1,14 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import getGenerativeAIResponse from "@/scripts/aistudio";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Job } from "@prisma/client";
@@ -41,7 +33,7 @@ const TagsForm = ({ initialData, jobId }: TagsFormProps) => {
     defaultValues: initialData,
   });
 
-  const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     try {
@@ -63,14 +55,17 @@ const TagsForm = ({ initialData, jobId }: TagsFormProps) => {
     try {
       setIsPrompting(true);
 
-      const customPrompt = `Generate an array of top 10 keywords related to the job profession "${prompt}". These keywords should encompass various aspects of the profession, including skills, responsibilities, tools, and technologies commonly associated with it. Aim for a diverse set of keywords that accurately represent the breadth of the profession. Your output should be a list/array of keywords. Just return me the array alone.`;
+      const customPrompt = `Generate an array of top 10 keywords related to the job profession "${prompt}". These keywords should encompass various aspects of the profession, including skills, responsibilities, tools, and technologies commonly associated with it. Aim for a diverse set of keywords that accurately represent the breadth of the profession. Your output should be a list/array of keywords. Just return me only the array alone.`;
 
       await getGenerativeAIResponse(customPrompt).then((data) => {
         // check the data response is an array or not
 
-        console.log(data);
-        if (Array.isArray(JSON.parse(data))) {
-          setJobTags((prevTags) => [...prevTags, ...JSON.parse(data)]);
+        const match = data.match(/\[.*?\]/);
+
+        const keywords = match ? JSON.parse(match[0]) : [];
+
+        if (Array.isArray(keywords)) {
+          setJobTags((prevTags) => [...prevTags, ...keywords]);
         }
 
         setIsPrompting(false);
@@ -200,40 +195,6 @@ const TagsForm = ({ initialData, jobId }: TagsFormProps) => {
               Save
             </Button>
           </div>
-
-          {/* <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 mt-4"
-            >
-              <FormField
-                control={form.control}
-                name="tags"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Textarea
-                        disabled={isSubmitting}
-                        placeholder="Short description about the job"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="flex items-center gap-x-2">
-                <Button
-                  disabled={!isValid || isSubmitting}
-                  className="cursor-pointer"
-                  type="submit"
-                >
-                  Save
-                </Button>
-              </div>
-            </form>
-          </Form> */}
         </>
       )}
     </div>

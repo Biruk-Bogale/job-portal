@@ -1,13 +1,43 @@
+import { DataTable } from "@/components/DataTable";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import React from "react";
+import { columns, JobsColumns } from "./_components/Columns";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { format } from "date-fns";
 
-const JobPageOverView = () => {
-  // verify the mongodb ID
-  const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
+const JobPageOverView = async () => {
+  const { userId } = await auth();
 
-  console.log(validObjectIdRegex.test("user_2xcgS4CnuiPjz3LLdNPwPwOxWcr"));
+  if (!userId) {
+    redirect("/admin/jobs");
+  }
+
+  const jobs = await db.job.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      catagory: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const formatedJobs: JobsColumns[] = jobs.map((job) => ({
+    id: job.id,
+    title: job.title,
+    company: "",
+    category: job.catagory ? job.catagory?.name : "N/A",
+    isPublished: job.isPublished,
+    createdAt: job.createdAt
+      ? format(job.createdAt.toLocaleDateString(), "MMMM do, yyy")
+      : "N/A",
+  }));
 
   return (
     <div className="p-6 ">
@@ -20,6 +50,9 @@ const JobPageOverView = () => {
       </div>
 
       {/* datatable - List of jobs */}
+      <div className="mt-6">
+        <DataTable columns={columns} data={formatedJobs} />
+      </div>
     </div>
   );
 };
