@@ -22,6 +22,7 @@ const JobPageOverView = async () => {
     },
     include: {
       catagory: true,
+      company: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -31,7 +32,7 @@ const JobPageOverView = async () => {
   const formatedJobs: JobsColumns[] = jobs.map((job) => ({
     id: job.id,
     title: job.title,
-    company: "",
+    company: job.company ? job.company.name : "",
     category: job.catagory ? job.catagory?.name : "N/A",
     isPublished: job.isPublished,
     createdAt: job.createdAt
@@ -51,7 +52,7 @@ const JobPageOverView = async () => {
 
       {/* datatable - List of jobs */}
       <div className="mt-6">
-        <DataTable columns={columns} data={formatedJobs} searchKey="title"/>
+        <DataTable columns={columns} data={formatedJobs} searchKey="title" />
       </div>
     </div>
   );

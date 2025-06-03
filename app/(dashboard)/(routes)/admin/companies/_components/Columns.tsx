@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Pencil } from "lucide-react";
 import Link from "next/link";
 import { ArrowUpDown } from "lucide-react";
+import Image from "next/image";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -25,6 +26,20 @@ export const columns: ColumnDef<CompanyColumns>[] = [
   {
     accessorKey: "logo",
     header: "Logo",
+    cell: ({ row }) => {
+      const { logo } = row.original;
+
+      return (
+        <div className="w-20 h-20 flex items-center relative rounded-md overflow-hidden">
+          <Image
+            src={logo}
+            alt="Logo"
+            className="w-full h-full object-contain"
+            fill
+          />
+        </div>
+      );
+    },
   },
 
   {

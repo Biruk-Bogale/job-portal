@@ -1,6 +1,12 @@
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
-import { ArrowLeft, LayoutDashboard, ListCheck } from "lucide-react";
+import {
+  ArrowLeft,
+  Building2,
+  File,
+  LayoutDashboard,
+  ListCheck,
+} from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -17,6 +23,7 @@ import WorkModeForm from "./_components/WorkModeForm";
 import WorkExprienceForm from "./_components/WorkExprienceForm";
 import JobDescription from "./_components/JobDescription";
 import TagsForm from "./_components/TagsForm";
+import CompanyForm from "./_components/CompanyForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -42,6 +49,15 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   const categories = await db.category.findMany({
     orderBy: {
       name: "asc",
+    },
+  });
+
+  const companies = await db.company.findMany({
+    where: {
+      userId,
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -156,6 +172,33 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
             </div>
 
             <TagsForm initialData={job} jobId={job.id} />
+          </div>
+
+          {/* company details */}
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={Building2} />
+              <h2 className="text-xl text-neutral-700">Company Details</h2>
+            </div>
+
+            <CompanyForm
+              initialData={job}
+              jobId={job.id}
+              options={companies.map((company) => ({
+                label: company.name,
+                value: company.id,
+              }))}
+            />
+          </div>
+
+          {/* attachements */}
+          <div>
+            <div className="flex items-center gap-x-2">
+              <IconBadge icon={File} />
+              <h2 className="text-xl text-neutral-700">Job Attachement</h2>
+            </div>
+
+
           </div>
         </div>
 

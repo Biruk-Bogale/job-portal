@@ -10,6 +10,8 @@ import CompanyDescriptionForm from "./_components/DescriptionForm";
 import CompanyLogoForm from "./_components/LogoForm";
 import CompanySocialContactsForm from "./_components/SocialContactsForm";
 import CompanyCoverImageForm from "./_components/CoverImageForm";
+import CompanyOverview from "./_components/CompanyOverview";
+import WhyJoinUs from "./_components/WhyJoinUs";
 
 const CompanyEditPage = async ({
   params,
@@ -33,12 +35,6 @@ const CompanyEditPage = async ({
     where: {
       id: params.companyId,
       userId,
-    },
-  });
-
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc",
     },
   });
 
@@ -66,8 +62,6 @@ const CompanyEditPage = async ({
   const completedFields = requiredFields.filter(Boolean).length;
 
   const completionText = `${completedFields}/${totalFields}`;
-
-  const isComplete = requiredFields.every(Boolean);
 
   return (
     <div className="p-6">
@@ -131,6 +125,14 @@ const CompanyEditPage = async ({
               companyId={company.id}
             />
           </div>
+        </div>
+
+        <div className="col-span-2">
+          <CompanyOverview initialData={company} companyId={company.id} />
+        </div>
+
+        <div className="col-span-2">
+          <WhyJoinUs initialData={company} companyId={company.id} />
         </div>
       </div>
     </div>
