@@ -12,7 +12,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Job, Attachment } from "@prisma/client";
 import axios from "axios";
-import { File, Pencil, X } from "lucide-react";
+import { File, Loader2, Pencil, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ const formSchema = z.object({
 
 const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const router = useRouter();
 
   // Assuming initialData is available and has type of any
@@ -76,6 +77,22 @@ const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
 
   const toggleEditing = () => setIsEditing((current) => !current);
 
+  const onDelete = async (attachment: Attachment) => {
+    try {
+      setDeletingId(attachment.id);
+
+      await axios.delete(`/api/jobs/${jobId}/attachments/${attachment.id}`);
+
+      toast.success("Attachment Removed");
+
+      router.refresh( );
+    } catch (error) {
+      toast.error("Something went wrong");
+
+      console.log((error as Error)?.message);
+    }
+  };
+
   return (
     <div className="mt-6 border bg-neutral-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
@@ -98,7 +115,7 @@ const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
 
       {/* display the attachments if not editing */}
       {!isEditing && (
-        <>
+        <div className="space-y-2">
           {initialData.attachments.map((item) => (
             <div
               key={item.url}
@@ -106,18 +123,34 @@ const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
             >
               <File className="w-4 h-4 mr-2" />
               <p className="text-xs w-full truncate">{item.name}</p>
-              <Button
-                variant={"ghost"}
-                size={"icon"}
-                type="button"
-                className="p-1"
-                onClick={() => {}}
-              >
-                <X className="w-4 h-4" />
-              </Button>
+
+              {deletingId === item.id && (
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  type="button"
+                  className="p-1"
+                >
+                  <Loader2 className="animate-spin w-4 h-4" />
+                </Button>
+              )}
+
+              {deletingId !== item.id && (
+                <Button
+                  variant={"ghost"}
+                  size={"icon"}
+                  type="button"
+                  className="p-1"
+                  onClick={() => {
+                    onDelete(item);
+                  }}
+                >
+                  <X className="w-4 h-4" />
+                </Button>
+              )}
             </div>
           ))}
-        </>
+        </div>
       )}
 
       {/* display the attachments if editing */}
@@ -133,10 +166,11 @@ const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
                     <AttachmentUploads
                       value={field.value}
                       disabled={isSubmitting}
-                      onChange={(attachements) => {
-                        field.onChange(attachements.map((item) => item));
+                      onChange={(attachments) => {
+                        if (attachments) {
+                          onSubmit({ attachments });
+                        }
                       }}
-                      onRemove={() => field.onChange("")}
                     />
                   </FormControl>
                   <FormMessage />

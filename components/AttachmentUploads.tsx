@@ -1,14 +1,8 @@
 "use client";
 
 import { storage } from "@/config/firebase.config";
-import {
-  deleteObject,
-  getDownloadURL,
-  ref,
-  uploadBytesResumable,
-} from "firebase/storage";
-import { File, FilePlus, ImagePlus, Trash, X } from "lucide-react";
-import Image from "next/image";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { File, FilePlus } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
@@ -16,15 +10,10 @@ import { Button } from "./ui/button";
 interface AttachmentUploadsProps {
   disabled?: boolean;
   onChange: (value: { url: string; name: string }[]) => void;
-  onRemove: (value: string) => void;
   value: { url: string; name: string }[];
 }
 
-const AttachmentUploads = ({
-  onChange,
-  onRemove,
-  value,
-}: AttachmentUploadsProps) => {
+const AttachmentUploads = ({ onChange, value }: AttachmentUploadsProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState<number>(0);
@@ -88,23 +77,13 @@ const AttachmentUploads = ({
     });
   };
 
-  const onDelete = ({ url, name }: { url: string; name: string }) => {
-    const newValue = value.filter((data) => data.name !== name);
-
-    onChange(newValue);
-
-    deleteObject(ref(storage, url)).then(() => {
-      toast.success("Attachment Removed");
-    });
-  };
-
   return (
     <div>
-      <div className="w-full p-2 flex items-center justify-end">
+      <div className="w-full p-2 h-12 cursor-pointer hover:bg-orange-50 bg-orange-100 flex items-center justify-center">
         {isLoading ? (
           <>{`${progress.toFixed(2)}%`}</>
         ) : (
-          <label>
+          <label className="w-full h-full flex items-center justify-center">
             <div className="flex gap-2 items-center cursor-pointer justify-center">
               <FilePlus className="w-3 h-3 mr-2" />
               <p>Add a file</p>
@@ -125,7 +104,7 @@ const AttachmentUploads = ({
         {value && value.length > 0 ? (
           <>
             {/* dispaly attachment */}
-            <div className="space-y-2">
+            <div className="space-y-2 mt-2">
               {value.map((item) => (
                 <div
                   key={item.url}
@@ -138,10 +117,7 @@ const AttachmentUploads = ({
                     size={"icon"}
                     type="button"
                     className="p-1"
-                    onClick={() => onDelete(item)}
-                  >
-                    <X className="w-4 h-4" />
-                  </Button>
+                  ></Button>
                 </div>
               ))}
             </div>
