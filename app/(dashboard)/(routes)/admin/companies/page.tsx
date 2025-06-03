@@ -49,7 +49,7 @@ const CompaniesOverViewPage = async () => {
         <DataTable
           columns={columns}
           data={formatedCompanies}
-          searchKey="title"
+          searchKey="name"
         />
       </div>
     </div>

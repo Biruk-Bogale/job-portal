@@ -31,7 +31,7 @@ export const PATCH = async (
 
     return NextResponse.json(job);
   } catch (error) {
-    console.log(`[JOB_POST]:${error}`);
+    console.log(`[JOB_PATCH]:${error}`);
 
     return new NextResponse("Internal Server Error", { status: 500 });
   }

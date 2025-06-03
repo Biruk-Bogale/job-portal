@@ -32,6 +32,7 @@ model Job{
   catagory Category? @relation(fields:[categoryId],references: [id])
   companyId String? @db.ObjectId
   company Company? @relation(fields:[companyId],references: [id])
+  attachments Attachment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   @@index([categoryId])
@@ -57,6 +58,16 @@ model Company{
   followers String[]
   overview String?
   whyJoinUs String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Attachment{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  url String
+  name String
+  jobId String @db.ObjectId
+  job Job? @relation(fields: [jobId],references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }

@@ -127,11 +127,11 @@ const CompanyEditPage = async ({
           </div>
         </div>
 
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <CompanyOverview initialData={company} companyId={company.id} />
         </div>
 
-        <div className="col-span-2">
+        <div className="md:col-span-2">
           <WhyJoinUs initialData={company} companyId={company.id} />
         </div>
       </div>

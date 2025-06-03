@@ -24,6 +24,7 @@ import WorkExprienceForm from "./_components/WorkExprienceForm";
 import JobDescription from "./_components/JobDescription";
 import TagsForm from "./_components/TagsForm";
 import CompanyForm from "./_components/CompanyForm";
+import AttachmentsForm from "./_components/AttachmentsForm";
 
 const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
   // verify the mongodb ID
@@ -43,6 +44,13 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
     where: {
       id: params.jobId,
       userId,
+    },
+    include: {
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
     },
   });
 
@@ -191,14 +199,15 @@ const JobDetailsPage = async ({ params }: { params: { jobId: string } }) => {
             />
           </div>
 
-          {/* attachements */}
+          {/* attachements details*/}
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={File} />
               <h2 className="text-xl text-neutral-700">Job Attachement</h2>
             </div>
 
-
+            {/* attachements details*/}
+            <AttachmentsForm initialData={job} jobId={job.id} />
           </div>
         </div>
 
