@@ -67,7 +67,7 @@ model Attachment{
   url String
   name String
   jobId String @db.ObjectId
-  job Job? @relation(fields: [jobId],references: [id], onDelete : Cascade)
+  job Job? @relation(fields: [jobId],references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
