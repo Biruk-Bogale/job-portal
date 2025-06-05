@@ -3,6 +3,7 @@ import SearchContainer from "@/components/SearchContainer";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import CatagoriesList from "./_components/CatagoriesList";
+import PageContent from "./_components/PageContent";
 
 interface SearchProps {
   searchParams: {
@@ -38,6 +39,7 @@ const SearchPage = async ({ searchParams }: SearchProps) => {
         {/* applied filters */}
 
         {/* page content */}
+        <PageContent jobs={jobs} userId={userId} />
       </div>
     </>
   );

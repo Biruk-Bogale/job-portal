@@ -25,7 +25,8 @@ export const getJobs = async ({
 
   try {
     // intialize the query object with common options
-    let query: any = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: any = {
       where: {
         isPublished: true,
       },

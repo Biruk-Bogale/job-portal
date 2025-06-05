@@ -85,7 +85,7 @@ const AttachmentsForm = ({ initialData, jobId }: AttachmentsFormProps) => {
 
       toast.success("Attachment Removed");
 
-      router.refresh( );
+      router.refresh();
     } catch (error) {
       toast.error("Something went wrong");
 
