@@ -9,6 +9,7 @@ import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
+  Bookmark,
   BookmarkCheckIcon,
   BriefcaseBusiness,
   Currency,
@@ -20,13 +21,16 @@ import { cn, formatedString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { truncate } from "lodash";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 interface JobCardItemProps {
   job: Job;
-  useId: string | null;
+  userId: string | null;
 }
 
-const JobCardItem = ({ job, useId }: JobCardItemProps) => {
+const JobCardItem = ({ job, userId }: JobCardItemProps) => {
   const typeJob = job as Job & {
     company: Company | null;
   };
@@ -34,7 +38,32 @@ const JobCardItem = ({ job, useId }: JobCardItemProps) => {
   const company = typeJob.company;
 
   const [isBookmarkLoading, setIsBookmarkLoading] = useState(false);
-  const SavedUsersIcon = BookmarkCheckIcon;
+  const isSavedByUser = userId && job.savedUsers?.includes(userId);
+  const SavedUsersIcon = isSavedByUser ? BookmarkCheckIcon : Bookmark;
+  const router = useRouter();
+
+  const onClickSaveJob = async () => {
+    try {
+      setIsBookmarkLoading(true);
+
+      if (isSavedByUser) {
+        await axios.patch(`/api/jobs/${job.id}/removeJobFromCollection`);
+
+        toast.success("Job Removed");
+      } else {
+        await axios.patch(`/api/jobs/${job.id}/saveJobToCollection`);
+
+        toast.success("Job Saved");
+      }
+
+      router.refresh();
+    } catch (error) {
+      toast.error("Something went wrong");
+      console.log(`Error : ${(error as Error)?.message}`);
+    } finally {
+      setIsBookmarkLoading(false);
+    }
+  };
 
   return (
     <motion.div layout>
@@ -52,7 +81,16 @@ const JobCardItem = ({ job, useId }: JobCardItemProps) => {
               {isBookmarkLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
               ) : (
-                <SavedUsersIcon className={cn("w-4 h-4")} />
+                <div onClick={onClickSaveJob}>
+                  <SavedUsersIcon
+                    className={cn(
+                      "w-4 h-4",
+                      isSavedByUser
+                        ? "text-emerald-500"
+                        : "text-muted-foreground"
+                    )}
+                  />
+                </div>
               )}
             </Button>
           </Box>
@@ -148,10 +186,11 @@ const JobCardItem = ({ job, useId }: JobCardItemProps) => {
             </Link>
 
             <Button
-              className="w-full text-white hover:text-white/90 hover:bg-orange-800 bg-orange-800/90 flex-1 "
+              className="w-full text-white hover:text-white/90 hover:bg-orange-800 bg-orange-800/90 flex-1 truncate"
               variant={"outline"}
+              onClick={onClickSaveJob}
             >
-              Save
+              {isSavedByUser ? "Saved" : "Save For Later"}
             </Button>
           </Box>
         </div>

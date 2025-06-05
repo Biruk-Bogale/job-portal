@@ -39,7 +39,7 @@ const PageContent = ({ jobs, userId }: PageContentProps) => {
           className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 gap-2"
         >
           {jobs.map((job) => (
-            <JobCardItem key={job.id} job={job} useId={userId} />
+            <JobCardItem key={job.id} job={job} userId={userId} />
           ))}
         </motion.div>
       </AnimatePresence>
