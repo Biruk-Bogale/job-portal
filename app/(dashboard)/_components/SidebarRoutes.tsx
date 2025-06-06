@@ -3,6 +3,11 @@
 import { BookMarked, Compass, Home, List, User } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import SideBarRouteItem from "./SideBarRouteItem";
+import Box from "@/components/Box";
+import { Separator } from "@/components/ui/separator";
+import DateFilter from "./DateFilter";
+import CheckBoxContainer from "./CheckBoxContainer";
+import qs from "query-string";
 
 const adminRoutes = [
   {
@@ -45,13 +50,123 @@ const guestRoutes = [
   },
 ];
 
+const shiftTimingsData = [
+  {
+    value: "full-time",
+    label: "Full Time",
+  },
+  {
+    value: "part-time",
+    label: "Part Time",
+  },
+  {
+    value: "contract",
+    label: "Contract",
+  },
+];
+
+const workingModesData = [
+  {
+    value: "remote",
+    label: "Remote",
+  },
+  {
+    value: "hybrid",
+    label: "Hybrid",
+  },
+  {
+    value: "office",
+    label: "Office",
+  },
+];
+
+const experienceData = [
+  {
+    value: "0",
+    label: "Fresher",
+  },
+  {
+    value: "2",
+    label: "0-2 years",
+  },
+  {
+    value: "3",
+    label: "2-4 years",
+  },
+  {
+    value: "5",
+    label: "5+ years",
+  },
+];
+
 const SidebarRoutes = () => {
   const pathname = usePathname();
   const router = useRouter();
 
   const isAdminPage = pathname.startsWith("/admin");
+  const isSearchPage = pathname?.startsWith("/search");
 
   const routes = isAdminPage ? adminRoutes : guestRoutes;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleShiftTimingChange = (shiftTimings: any[]) => {
+    const currentQueryParams = qs.parseUrl(window.location.href).query;
+
+    const updateQueryParams = {
+      ...currentQueryParams,
+      shiftTiming: shiftTimings,
+    };
+
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: updateQueryParams,
+      },
+      { skipNull: true, skipEmptyString: true }
+    );
+
+    router.push(url);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleWorkingModeChange = (workingMode: any[]) => {
+    const currentQueryParams = qs.parseUrl(window.location.href).query;
+
+    const updateQueryParams = {
+      ...currentQueryParams,
+      workMode: workingMode,
+    };
+
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: updateQueryParams,
+      },
+      { skipNull: true, skipEmptyString: true, arrayFormat: "comma" }
+    );
+
+    router.push(url);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleExperienceChange = (experience: any[]) => {
+    const currentQueryParams = qs.parseUrl(window.location.href).query;
+
+    const updateQueryParams = {
+      ...currentQueryParams,
+      yearsOfExperience: experience,
+    };
+
+    const url = qs.stringifyUrl(
+      {
+        url: pathname,
+        query: updateQueryParams,
+      },
+      { skipNull: true, skipEmptyString: true, arrayFormat: "comma" }
+    );
+
+    router.push(url);
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -63,6 +178,47 @@ const SidebarRoutes = () => {
           icon={route.icon}
         />
       ))}
+
+      {isSearchPage && (
+        <Box className="px-4 py-4 items-start justify-start space-y-4 flex-col">
+          {/* filter the data by the created at */}
+          <Separator />
+          <h2 className="text-lg text-muted-foreground tracking-wide">
+            Filters
+          </h2>
+          <DateFilter />
+
+          {/*  */}
+          <Separator />
+          <h2 className="text-lg text-muted-foreground tracking-wide">
+            Working Schedule
+          </h2>
+          <CheckBoxContainer
+            data={shiftTimingsData}
+            onChange={handleShiftTimingChange}
+          />
+
+          {/*  */}
+          <Separator />
+          <h2 className="text-lg text-muted-foreground tracking-wide">
+            Working Mode
+          </h2>
+          <CheckBoxContainer
+            data={workingModesData}
+            onChange={handleWorkingModeChange}
+          />
+
+          {/*  */}
+          <Separator />
+          <h2 className="text-lg text-muted-foreground tracking-wide">
+            Experience
+          </h2>
+          <CheckBoxContainer
+            data={experienceData}
+            onChange={handleExperienceChange}
+          />
+        </Box>
+      )}
     </div>
   );
 };

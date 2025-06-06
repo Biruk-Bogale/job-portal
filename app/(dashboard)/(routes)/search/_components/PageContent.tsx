@@ -35,8 +35,8 @@ const PageContent = ({ jobs, userId }: PageContentProps) => {
       <AnimatePresence>
         <motion.div
           layout
-          {...fadeInOut}
-          className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 gap-2"
+        //   {...fadeInOut}
+          className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-5 gap-2"
         >
           {jobs.map((job) => (
             <JobCardItem key={job.id} job={job} userId={userId} />

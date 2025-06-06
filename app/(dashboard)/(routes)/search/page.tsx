@@ -8,7 +8,7 @@ import PageContent from "./_components/PageContent";
 interface SearchProps {
   searchParams: {
     title: string;
-    categoryId: string;
+    categoryId: "string";
     createdAtFilter: string;
     shiftTiming: string;
     workMode: string;
