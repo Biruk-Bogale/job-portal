@@ -21,12 +21,19 @@ const CategoryListItem = ({ label, value }: CategoryListItemProps) => {
   const isSelected = currentCategoryId === value;
 
   const onClick = () => {
+    const currentQueryParams = qs.parseUrl(window.location.href).query;
+
+    const updateQueryParams = {
+      ...currentQueryParams,
+      categoryId: isSelected ? null : value,
+    };
+
     const url = qs.stringifyUrl(
       {
         url: pathname,
         query: {
           title: currentTitle,
-          categoryId: isSelected ? null : value,
+          ...updateQueryParams,
         },
       },
       {
