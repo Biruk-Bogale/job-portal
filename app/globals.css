@@ -142,3 +142,14 @@ body,
   scrollbar-width: none;
   -ms-overflow-style: none; /* for IE and Edge */
 }
+
+
+.wysiwyg {
+  line-height: 1.5;
+}
+
+.wysiwyg ol,
+.wysiwyg ul {
+  padding-left: 1.5rem;
+  @apply list-disc;
+}

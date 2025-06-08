@@ -3,12 +3,12 @@
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Home } from "lucide-react";
+import Link from "next/link";
 
 interface CustomBreadCrumbProps {
   breadCrumbPage: string;
@@ -23,21 +23,18 @@ const CustomBreadCrumb = ({
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="flex items-center justify-center">
+          <Link href="/" className="flex items-center justify-center">
             <Home className="w-3 h-3 mr-2" /> Home
-          </BreadcrumbLink>
+          </Link>
         </BreadcrumbItem>
 
         {breadCrumbItem && (
           <>
+            <BreadcrumbSeparator />
             {breadCrumbItem.map((item, index) => (
-              <>
-                <BreadcrumbSeparator key={index} />
-
-                <BreadcrumbItem>
-                  <BreadcrumbLink href={item.link}>{item.label}</BreadcrumbLink>
-                </BreadcrumbItem>
-              </>
+              <BreadcrumbItem key={index}>
+                <Link href={item.link}>{item.label}</Link>
+              </BreadcrumbItem>
             ))}
           </>
         )}
