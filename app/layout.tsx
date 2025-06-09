@@ -1,21 +1,13 @@
 import type { Metadata } from "next";
-import {
-  Poppins,
-  // Mona_Sans,
-} from "next/font/google";
+import { Mona_Sans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ToastProvider } from "@/providers/toast-provider";
 
-const poppins = Poppins({
+const MonaSans = Mona_Sans({
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
 });
-
-// const MonaSans = Mona_Sans({
-//   subsets: ["latin"],
-//   weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
-// });
 
 export const metadata: Metadata = {
   title: "Online Job Portal",
@@ -30,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${poppins.className}`}>
+        <body className={`${MonaSans.className}`}>
           {children}
 
           <ToastProvider />

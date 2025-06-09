@@ -9,6 +9,14 @@ import { db } from "@/lib/db";
 import EmailForm from "./_components/EmailForm";
 import ContactForm from "./_components/ContactForm";
 import ResumeForm from "./_components/ResumeForm";
+import { DataTable } from "@/components/DataTable";
+import { AppliedJobsColumns, columns } from "./_components/Columns";
+import { format } from "date-fns";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { truncate } from "lodash";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 const ProfilePage = async () => {
   const { userId } = await auth();
@@ -29,6 +37,56 @@ const ProfilePage = async () => {
           createdAt: "desc",
         },
       },
+    },
+  });
+
+  const jobs = await db.job.findMany({
+    where: {
+      userId,
+    },
+    include: {
+      company: true,
+      catagory: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const filterdAppliedJobs =
+    profile && profile?.appliedJobs.length > 0
+      ? jobs
+          .filter((job) =>
+            profile.appliedJobs.some(
+              (appliedJob) => appliedJob.jobId === job.id
+            )
+          )
+          .map((job) => ({
+            ...job,
+            appliedAt: profile.appliedJobs.find(
+              (appliedJob) => appliedJob.jobId === job.id
+            )?.appliedAt,
+          }))
+      : [];
+
+  const formatedJobs: AppliedJobsColumns[] = filterdAppliedJobs.map((job) => ({
+    id: job?.id,
+    title: job?.title,
+    company: job?.company ? job?.company?.name : "",
+    category: job.catagory ? job.catagory?.name : "",
+    appliedAt: job?.appliedAt
+      ? format(new Date(job.appliedAt), "MMMM do, yyyy")
+      : "",
+  }));
+
+  const followedCompanies = await db.company.findMany({
+    where: {
+      followers: {
+        has: userId,
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
     },
   });
 
@@ -57,6 +115,67 @@ const ProfilePage = async () => {
         <ContactForm initialData={profile} userId={userId} />
 
         <ResumeForm initialData={profile} userId={userId} />
+      </Box>
+
+      <Box className="flex-col items-start justify-start mt-12">
+        <h2 className="text-2xl text-muted-foreground font-semibold">
+          Applied Jobs
+        </h2>
+
+        <div className="w-full mt-6">
+          <DataTable
+            columns={columns}
+            searchKey="company"
+            data={formatedJobs}
+          />
+        </div>
+      </Box>
+
+      <Box className="flex-col items-start justify-start mt-12">
+        <h2 className="text-2xl text-muted-foreground font-semibold">
+          Followed Companies
+        </h2>
+
+        <div className="mt-6 w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-6 gap-2">
+          {followedCompanies.length === 0 ? (
+            <p>No Companies followed yet</p>
+          ) : (
+            <React.Fragment>
+              {followedCompanies.map((com) => (
+                <Card key={""} className="p-3 space-y-2 relative">
+                  <div className="w-full flex items-center justify-end">
+                    <Link href={`/companies/${com.id}`}>
+                      <Button variant={"ghost"} size={"icon"}>
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {com.logo && (
+                    <div className="w-full h-24 flex items-center justify-center relative overflow-hidden">
+                      <Image
+                        fill
+                        alt="Logo"
+                        src={com?.logo}
+                        className="object-contain w-full h-full"
+                      />
+                    </div>
+                  )}
+                  <CardTitle className="text-lg">{com?.name}</CardTitle>
+
+                  {com.description && (
+                    <CardDescription>
+                      {truncate(com?.description, {
+                        length: 80,
+                        omission: "...",
+                      })}
+                    </CardDescription>
+                  )}
+                </Card>
+              ))}
+            </React.Fragment>
+          )}
+        </div>
       </Box>
     </div>
   );

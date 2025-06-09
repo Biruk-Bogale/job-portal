@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import handlebars from "handlebars";
-import { string } from "zod";
 import toast from "react-hot-toast";
 import { ThankYouTemplate } from "./design/thank-you";
 
