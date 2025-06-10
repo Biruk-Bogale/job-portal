@@ -46,7 +46,7 @@ const guestRoutes = [
   {
     icon: BookMarked,
     label: "Saved Jobs",
-    href: "/savedjobs",
+    href: "/savedJobs",
   },
 ];
 

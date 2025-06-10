@@ -2,10 +2,12 @@ import nodemailer from "nodemailer";
 import handlebars from "handlebars";
 import toast from "react-hot-toast";
 import { ThankYouTemplate } from "./design/thank-you";
+import { SendSelectedTemplate } from "./design/send-selected-template";
+import { SendRejectedTemplate } from "./design/send-rejected-template";
 
 export const sendMail = async ({
   to,
-  name,
+  // name,
   subject,
   body,
 }: {
@@ -54,6 +56,26 @@ export const sendMail = async ({
 
 export const compileThankYouEmailTemplate = (name: string) => {
   const template = handlebars.compile(ThankYouTemplate);
+
+  const htmlBody = template({
+    name: name,
+  });
+
+  return htmlBody;
+};
+
+export const compileSendSelectedEmailTemplate = (name: string) => {
+  const template = handlebars.compile(SendSelectedTemplate);
+
+  const htmlBody = template({
+    name: name,
+  });
+
+  return htmlBody;
+};
+
+export const compileSendRejectionEmailTemplate = (name: string) => {
+  const template = handlebars.compile(SendRejectedTemplate);
 
   const htmlBody = template({
     name: name,

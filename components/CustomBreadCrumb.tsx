@@ -30,11 +30,13 @@ const CustomBreadCrumb = ({
 
         {breadCrumbItem && (
           <>
-            <BreadcrumbSeparator />
             {breadCrumbItem.map((item, index) => (
-              <BreadcrumbItem key={index}>
-                <Link href={item.link}>{item.label}</Link>
-              </BreadcrumbItem>
+              <span key={index} className="flex flex-row items-center">
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <Link href={item.link}>{item.label}</Link>
+                </BreadcrumbItem>
+              </span>
             ))}
           </>
         )}

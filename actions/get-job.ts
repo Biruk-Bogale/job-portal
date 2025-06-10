@@ -9,13 +9,13 @@ type GetJobs = {
   shiftTiming?: string;
   workMode?: string;
   yearsOfExperience?: string;
-  saveJobs?: boolean;
+  savedJobs?: boolean;
 };
 
 export const getJobs = async ({
   categoryId,
   createdAtFilter,
-  saveJobs,
+  savedJobs,
   shiftTiming,
   title,
   workMode,
@@ -123,6 +123,13 @@ export const getJobs = async ({
     if (formatedYearsOfExperience && formatedYearsOfExperience.length > 0) {
       query.where.yearsOfExperience = {
         in: formatedYearsOfExperience,
+      };
+    }
+
+    // ////////////
+    if (savedJobs) {
+      query.where.savedUsers = {
+        has: userId,
       };
     }
 
