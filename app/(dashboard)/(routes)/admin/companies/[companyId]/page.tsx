@@ -13,11 +13,13 @@ import CompanyCoverImageForm from "./_components/CoverImageForm";
 import CompanyOverview from "./_components/CompanyOverview";
 import WhyJoinUs from "./_components/WhyJoinUs";
 
-const CompanyEditPage = async ({
-  params,
-}: {
-  params: { companyId: string };
-}) => {
+interface PageProps {
+  params: {
+    companyId: string;
+  };
+}
+
+const CompanyEditPage = async ({ params }: PageProps) => {
   // verify the mongodb ID
   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
 
