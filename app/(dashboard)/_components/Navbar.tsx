@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import NavBarRoutes from './NavBarRoutes'
 import MobileSideBar from './MobileSideBar'

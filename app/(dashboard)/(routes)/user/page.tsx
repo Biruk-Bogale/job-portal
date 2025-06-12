@@ -142,7 +142,7 @@ const ProfilePage = async () => {
           ) : (
             <React.Fragment>
               {followedCompanies.map((com) => (
-                <Card key={""} className="p-3 space-y-2 relative">
+                <Card key={com?.id} className="p-3 space-y-2 relative">
                   <div className="w-full flex items-center justify-end">
                     <Link href={`/companies/${com.id}`}>
                       <Button variant={"ghost"} size={"icon"}>

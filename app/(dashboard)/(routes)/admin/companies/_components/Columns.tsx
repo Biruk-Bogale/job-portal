@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Pencil } from "lucide-react";
+import { ImageIcon, MoreHorizontal, Pencil } from "lucide-react";
 import Link from "next/link";
 import { ArrowUpDown } from "lucide-react";
 import Image from "next/image";
@@ -30,14 +30,24 @@ export const columns: ColumnDef<CompanyColumns>[] = [
       const { logo } = row.original;
 
       return (
-        <div className="w-20 h-20 flex items-center relative rounded-md overflow-hidden">
-          <Image
-            src={logo}
-            alt="Logo"
-            className="w-full h-full object-contain"
-            fill
-          />
-        </div>
+        <>
+          {logo ? (
+            <div className="w-20 h-20 flex items-center relative rounded-md overflow-hidden">
+              <Image
+                alt="Logo"
+                src={logo || ""}
+                className="w-full h-full object-contain"
+                fill
+              />
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-center w-20 h-20 bg-neutral-200 rounded-md">
+                <ImageIcon className="w-full text-neutral-500" />
+              </div>
+            </>
+          )}
+        </>
       );
     },
   },

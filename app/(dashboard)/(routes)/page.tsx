@@ -5,6 +5,10 @@ import { auth } from "@clerk/nextjs/server";
 import React from "react";
 import HomeSearchContainer from "../_components/HomeSearchContainer";
 import Image from "next/image";
+import HomeScreenCategoriesContainer from "../_components/HomeScreenCategoriesContainer";
+import HomeCompaniesList from "../_components/HomeCompaniesList";
+import RecommendedJobsList from "../_components/RecommendedJobsList";
+import { Footer } from "@/components/Footer";
 
 const DashboardHomePage = async () => {
   const { userId } = await auth();
@@ -36,7 +40,7 @@ const DashboardHomePage = async () => {
 
       <HomeSearchContainer />
 
-      <Box className="relative overflow-hidden h-64 justify-center rounded-lg mt-12">
+      <Box className="relative overflow-hidden h-64 justify-center rounded-lg mt-6">
         <Image
           src={"/img/home-page-Image.jpg"}
           alt="Home Banner"
@@ -53,6 +57,14 @@ const DashboardHomePage = async () => {
         height={240}
         className="object-cover rounded-lg"
       /> */}
+
+      <HomeScreenCategoriesContainer categories={categories} />
+
+      <HomeCompaniesList companies={companies} />
+
+      <RecommendedJobsList jobs={jobs.splice(0, 6)} userId={userId} />
+
+      <Footer/>
     </div>
   );
 };
