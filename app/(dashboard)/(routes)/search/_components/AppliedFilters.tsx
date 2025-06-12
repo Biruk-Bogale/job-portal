@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Category } from "@prisma/client";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 interface AppliedFiltersProps {
@@ -10,8 +10,6 @@ interface AppliedFiltersProps {
 }
 
 const AppliedFilters = ({ categories }: AppliedFiltersProps) => {
-  const pathname = usePathname();
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentParams = Object.fromEntries(searchParams.entries());
@@ -38,7 +36,8 @@ const AppliedFilters = ({ categories }: AppliedFiltersProps) => {
     <>
       <div className="mt-4 flex items-center gap-4">
         {shiftTimingParams &&
-          Object.entries(shiftTimingParams).map(([key, value]) => (
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          Object.entries(shiftTimingParams).map(([_, value]) => (
             <>
               {value.split(",").map((item) => (
                 <Button
@@ -54,6 +53,7 @@ const AppliedFilters = ({ categories }: AppliedFiltersProps) => {
           ))}
 
         {workingModesParams &&
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           Object.entries(workingModesParams).map(([key, value]) => (
             <div key={value} className="flex gap-1">
               {value.split(",").map((item) => (

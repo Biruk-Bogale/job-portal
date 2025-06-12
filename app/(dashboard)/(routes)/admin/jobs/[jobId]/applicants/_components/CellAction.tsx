@@ -18,7 +18,7 @@ interface CellActionProps {
   email: string;
 }
 
-const CellAction = ({ email, fullName, id }: CellActionProps) => {
+const CellAction = ({ email, fullName }: CellActionProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isRejection, setIsRejection] = useState(false);
 
