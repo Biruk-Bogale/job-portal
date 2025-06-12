@@ -13,13 +13,11 @@
 // import CompanyOverview from "./_components/CompanyOverview";
 // import WhyJoinUs from "./_components/WhyJoinUs";
 
-// interface PageProps {
-//   params: {
-//     companyId: string;
-//   };
-// }
-
-// const CompanyEditPage = async ({ params }: PageProps) => {
+// const CompanyEditPage = async ({
+//   params,
+// }: {
+//   params: { companyId: string };
+// }) => {
 //   // verify the mongodb ID
 //   const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
 
@@ -143,20 +141,12 @@
 
 // export default CompanyEditPage;
 
+import React from 'react'
 
-// app/(dashboard)/(routes)/admin/companies/[companyId]/page.tsx
-type PageProps = {
-  params: {
-    companyId: string;
-  };
-};
-
-export default function Page({ params }: PageProps) {
-  // Your component logic here
+const page = () => {
   return (
-    <div>
-      <h1>Company ID: {params.companyId}</h1>
-      {/* ... */}
-    </div>
-  );
+    <div>page</div>
+  )
 }
+
+export default page
